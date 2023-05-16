@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-app
+spec:
+  selector:
+    matchLabels:
+      app: nestjs-app
+  template:
+    metadata:
+      labels:
+        app: nestjs-app
+    spec:
+      containers:
+      - name: nestjs-app
+        image: nestjsmysqlaksdevacr.azurecr.io/nestjs-app:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 64Mi
+            cpu: 128m
+        ports:
+        - containerPort: 3000
+          name: http
