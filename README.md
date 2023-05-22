@@ -13,7 +13,7 @@ docker run -p 3000:3000 nestjs-app #Just to validate if the app is running
 
 - kind load docker-image nestjs-app --name "kluster"
 - kubectl apply -f kubernetes/bases/app
-- kubectl port-forward services/backend 3000:80
+- `kubectl port-forward services/backend 3000:80` to test locally
 - access the localhost:3000
 - Terraform
 
