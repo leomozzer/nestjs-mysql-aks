@@ -40,8 +40,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   tags = {
-    Environment = "Production"
+    Environment = var.environment
   }
+}
+
+resource "azurerm_role_assignment" "aks_acr_role" {
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = module.acr.azure_container_registry.acr.id
+  skip_service_principal_aad_check = true
 }
 
 output "client_certificate" {
