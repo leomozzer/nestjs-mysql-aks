@@ -12,8 +12,8 @@ spec:
         app: nestjs-app
     spec:
       containers:
-      - name: nestjs-app
-        image: nestjsmysqlaksdevacr.azurecr.io/nestjs-app:latest
+      - name: nestjs
+        image: nestjs-app.azurecr.io/nestjs-app:latest
         imagePullPolicy: IfNotPresent
         resources:
           limits:
