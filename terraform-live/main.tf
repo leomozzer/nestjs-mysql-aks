@@ -1,9 +1,3 @@
-resource "random_string" "random" {
-  length  = 7
-  special = false
-  upper   = false
-}
-
 locals {
   acr_name = replace("${var.app_name}-${var.environment}-acr", "-", "")
   aks_name = "${var.app_name}-${var.environment}-aks"
@@ -22,11 +16,6 @@ module "acr" {
   acr_sku = "Basic"
   admin_enabled = true
 }
-
-# output "acr" {
-#   value = module.acr.azure_container_registry
-#   sensitive = true
-# }
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name
