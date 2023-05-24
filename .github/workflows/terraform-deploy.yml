@@ -11,17 +11,10 @@ on:
   #pull_request:
 
 env:
-  # ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  # ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  # ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  # ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  GIT_REPOSITORY: https://github.com/leomozzer/nestjs-mysql-aks
-  PROJECT_NAME: nestjs-mysql-aks
-  TERRAFORM_WORKING_DIR: "terraform-live"
-  TERRAFORM_MODULES_DIR: "terraform-modules"
-  RESOURCE_GROUP_LOCATION: "eastus"
-  STORAGE_ACCOUNT_NAME: "nestsjaksstac"
-  STATE_FILE: "nestjs-mysql-aks.tfstate"
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 jobs:
   plan:
@@ -32,16 +25,16 @@ jobs:
     concurrency: ${{ matrix.stage }}
     uses: leomozzer/terraform-template/.github/workflows/terraform-plan.yml@main
     with:
-      TERRAFORM_WORKING_DIR: $TERRAFORM_WORKING_DIR
-      TERRAFORM_MODULES_DIR: $TERRAFORM_MODULES_DIR
+      TERRAFORM_WORKING_DIR: "terraform-live"
+      TERRAFORM_MODULES_DIR: "terraform-modules"
       WORKING_DIR: "./"
-      RESOURCE_GROUP_NAME: $PROJECT_NAME-${{ matrix.stage }}-rg
-      RESOURCE_GROUP_LOCATION: $RESOURCE_GROUP_LOCATION
-      STORAGE_ACCOUNT_NAME: "$STORAGE_ACCOUNT_NAME${{ matrix.stage }}"
+      RESOURCE_GROUP_NAME: "nestjs-mysql-aks-${{ matrix.stage }}-rg"
+      RESOURCE_GROUP_LOCATION: "eastus"
+      STORAGE_ACCOUNT_NAME: "nestsjaksstac${{ matrix.stage }}"
       CONTAINER_NAME: "states"
-      STATE_FILE: $STATE_FILE
+      STATE_FILE: "nestjs-mysql-aks.tfstate"
       STAGE: ${{ matrix.stage }}
-      TAGS: '"UseCase=Terraform" "Environment=${{ matrix.stage }}" "Deployed=GitHub Actions" "Repository=$GIT_REPOSITORY" "RunNumber=${{ github.run_number }}"'
+      TAGS: '"UseCase=Terraform" "Environment=${{ matrix.stage }}" "Deployed=GitHub Actions" "Repository=https://github.com/leomozzer/nestjs-mysql-aks" "RunNumber=${{ github.run_number }}"'
     secrets:
       AZURE_SP: ${{ secrets.AZURE_SP }}
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -59,7 +52,7 @@ jobs:
     uses: leomozzer/terraform-template/.github/workflows/terraform-apply.yml@main
     with:
       WORKING_DIR: "./"
-      STORAGE_ACCOUNT_NAME: $STORAGE_ACCOUNT_NAME${{ matrix.stage }}
+      STORAGE_ACCOUNT_NAME: "nestsjaksstac${{ matrix.stage }}"
       CONTAINER_NAME: "plans"
       STAGE: ${{ matrix.stage }}
     secrets:
