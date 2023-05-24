@@ -1,12 +1,12 @@
 name: 'Terraform Deploy'
 on:
-  # push:
-  #   branches:
-  #     - main
-  paths:
-    - 'terraform-live/**'
-    - 'terraform-modules/**'
-    - '.github/workflows/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform-live/**'
+      - 'terraform-modules/**'
+      - '.github/workflows/**'
   workflow_dispatch:
   #pull_request:
 
