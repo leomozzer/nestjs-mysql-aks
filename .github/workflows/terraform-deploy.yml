@@ -28,7 +28,7 @@ jobs:
       TERRAFORM_WORKING_DIR: "terraform-live"
       TERRAFORM_MODULES_DIR: "terraform-modules"
       WORKING_DIR: "./"
-      RESOURCE_GROUP_NAME: "nestjs-mysql-aks-${{ matrix.stage }}-rg"
+      RESOURCE_GROUP_NAME: "nestjs-mysql-aks-tfstate-${{ matrix.stage }}-rg"
       RESOURCE_GROUP_LOCATION: "eastus"
       STORAGE_ACCOUNT_NAME: "nestsjaksstac${{ matrix.stage }}"
       CONTAINER_NAME: "states"
