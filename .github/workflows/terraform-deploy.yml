@@ -44,10 +44,10 @@ jobs:
       TAGS: '"UseCase=Terraform" "Environment=${{ matrix.stage }}" "Deployed=GitHub Actions" "Repository=$GIT_REPOSITORY" "RunNumber=${{ github.run_number }}"'
     secrets:
       AZURE_SP: ${{ secrets.AZURE_SP }}
-      ARM_CLIENT_ID: $ARM_CLIENT_ID
-      ARM_CLIENT_SECRET: $ARM_CLIENT_SECRET
-      ARM_SUBSCRIPTION_ID: $ARM_SUBSCRIPTION_ID
-      ARM_TENANT_ID: $ARM_TENANT_ID
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
   apply:
     name: "Terraform"
