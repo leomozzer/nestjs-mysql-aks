@@ -1,7 +1,7 @@
 locals {
   acr_name = replace("${var.app_name}-${var.environment}-acr", "-", "")
   aks_name = "${var.app_name}-${var.environment}-aks"
-  kv_name = "${var.app_name}-${var.environment}-kv"
+  kv_name  = "${var.app_name}-${var.environment}-kv"
 }
 
 resource "azurerm_resource_group" "resource_group" {
