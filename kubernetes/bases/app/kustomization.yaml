@@ -14,3 +14,4 @@ images:
 - name: "app-image"
   newName: "nestjs-app"
   newTag: "initial"
+namespace: "nestjs"
