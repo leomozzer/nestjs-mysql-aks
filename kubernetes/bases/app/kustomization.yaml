@@ -3,7 +3,7 @@ kind: Kustomization
 
 # Generate a ConfigMap based on the environment variables in the file `.env`.
 configMapGenerator:
-  - name: my-config-map
+  - name: nestjs-config-map
     envs:
       - .env
 
@@ -11,7 +11,7 @@ replacements:
   - source:
       # Replace any matches by the value of environment variable `ACR_NAME`.
       kind: ConfigMap
-      name: my-config-map
+      name: nestjs-config-map
       fieldPath: data.ACR_NAME
     targets:
       - select:
@@ -27,7 +27,7 @@ replacements:
   - source:
       # Replace any matches by the value of environment variable `IMAGE_NAME`.
       kind: ConfigMap
-      name: my-config-map
+      name: nestjs-config-map
       fieldPath: data.IMAGE_NAME
     targets:
       - select:
