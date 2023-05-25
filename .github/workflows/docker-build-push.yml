@@ -10,18 +10,15 @@ on:
   workflow_dispatch:
   #pull_request:
 
-env:
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  GIT_REPOSITORY: https://github.com/leomozzer/nestjs-mysql-aks
-  PROJECT_NAME: nestjs-mysql-aks
-  TERRAFORM_WORKING_DIR: "terraform-live"
-  TERRAFORM_MODULES_DIR: "terraform-modules"
-  RESOURCE_GROUP_LOCATION: "eastus"
-  STORAGE_ACCOUNT_NAME: "nestsjaksstac"
-  STATE_FILE: "nestjs-mysql-aks.tfstate"
+# env:
+#   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+#   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+#   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+#   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+#   GIT_REPOSITORY: https://github.com/leomozzer/nestjs-mysql-aks
+#   PROJECT_NAME: nestjs-mysql-aks
+#   TERRAFORM_WORKING_DIR: "terraform-live"
+#   TERRAFORM_MODULES_DIR: "terraform-modules"
 
 jobs:
   build:
@@ -36,18 +33,21 @@ jobs:
     - uses: Azure/login@v1
       with:
         creds: ${{ secrets.AZURE_SP }}
+
     - uses: Azure/get-keyvault-secrets@v1
-      with: 
-        keyvault: $PROJECT_NAME-${{ matrix.stage }}-kv
-        secrets: 'acrLoginServer, acrUsername, acrPassword'
       id: myGetSecretAction
+      with: 
+        keyvault: nestjs-mysql-aks-${{ matrix.stage }}-kv
+        secrets: 'acrLoginServer, acrUsername, acrPassword'
+
     - uses: azure/docker-login@v1
       with:
         login-server: ${{ steps.myGetSecretAction.outputs.acrLoginServer}}
         username: ${{ steps.myGetSecretAction.outputs.acrUsername }}
         password: ${{ steps.myGetSecretAction.outputs.acrPassword }}
-    - run: |
+
+    - name: "Build and Push NestJS app"
+      run: |
         cd app/
         docker build -t ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
         docker push ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
-        
