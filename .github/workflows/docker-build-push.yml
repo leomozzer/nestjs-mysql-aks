@@ -62,16 +62,16 @@ jobs:
       id: install-kubectl
       uses: azure/setup-kubectl@v3
 
-    - name: "Deploy NestJS to AKS"
-      run: |
-        cd ./kubernetes/bases/app
-        kustomize edit set image app-imag=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
-        cd ..
-        kubectl apply -f ./app/
-        kubectl get nodes
-      env:
-        ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-        IMAGE_NAME: "nestjs-app:latest"
+    # - name: "Deploy NestJS to AKS"
+    #   run: |
+    #     cd ./kubernetes/bases/app
+    #     kustomize edit set image app-imag=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
+    #     cd ..
+    #     kubectl apply -f ./app/
+    #     kubectl get nodes
+    #   env:
+    #     ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+    #     IMAGE_NAME: "nestjs-app:latest"
 
     - name: "Deploy NestJS to AKS"
       run: |
