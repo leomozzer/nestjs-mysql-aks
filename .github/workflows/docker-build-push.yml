@@ -63,9 +63,9 @@ jobs:
 
     - name: "Deploy NestJS to AKS"
       run: |
-        echo $IMAGE_NAME
+        echo ${{ env.IMAGE_NAME }}
         cd ./kubernetes/environments/${{ matrix.stage }}
-        ACR_NAME=$(ACR_NAME) IMAGE_NAME=$(IMAGE_NAME) kubectl kustomize .
+        ACR_NAME=${{ env.ACR_NAME }} IMAGE_NAME=${{ env.IMAGE_NAME }} kubectl kustomize .
         kubectl apply -k ../../bases/app/
       env:
         ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
