@@ -1,4 +1,4 @@
-name: 'Docker Build and Push'
+name: 'AKS Deployment'
 on:
   # push:
   #   branches:
@@ -51,3 +51,20 @@ jobs:
         cd app/
         docker build -t ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
         docker push ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
+
+    - name: "Set AKS context"
+      id: set-context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: 'nestjs-mysql-aks-${{ matrix.stage }}-rg'
+        cluster-name: 'nestjs-mysql-aks-${{ matrix.stage }}-aks'
+
+    - name: "Setup kubectl"
+      id: install-kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: "Deploy NestJS to AKS"
+      run: |
+        cd ./kubernetes/bases/
+        ACR_NAME=${{ steps.myGetSecretAction.outputs.acrLoginServer}} IMAGE_NAME="nestjs-app:latest" kubectl kustomize .
+        kubectl apply -k ./app/
