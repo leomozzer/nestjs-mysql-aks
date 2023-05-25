@@ -73,14 +73,15 @@ jobs:
         ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
         IMAGE_NAME: "nestjs-app:latest"
 
-    # - name: "Deploy NestJS to AKS"
-    #   run: |
-    #     echo ${{ env.IMAGE_NAME }}
-    #     echo ${{ env.ACR_NAME }}
-    #     cd ./kubernetes/environments/${{ matrix.stage }}
-    #     #ACR_NAME=${{ env.ACR_NAME }} IMAGE_NAME=${{ env.IMAGE_NAME }} kubectl kustomize .
-    #     kustomize edit set image app-imag=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
-    #     kubectl apply -k ../../bases/app/
-    #   env:
-    #     ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-    #     IMAGE_NAME: "nestjs-app:latest"
+    - name: "Deploy NestJS to AKS"
+      run: |
+        echo ${{ env.IMAGE_NAME }}
+        echo ${{ env.ACR_NAME }}
+        cd ./kubernetes/environments/${{ matrix.stage }}
+        export ACR_NAME=${{ env.ACR_NAME }}
+        export IMAGE_NAME=${{ env.IMAGE_NAME }}
+        kubectl kustomize .
+        kubectl apply -k ../../bases/app/
+      env:
+        ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+        IMAGE_NAME: "nestjs-app:latest"

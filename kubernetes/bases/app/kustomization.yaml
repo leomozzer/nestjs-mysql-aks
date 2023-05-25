@@ -10,8 +10,8 @@ configMapGenerator:
     envs:
       - .env
 
-images:
-- name: "app-image"
-  newName: "nestjs-app"
-  newTag: "initial"
-namespace: "nestjs"
+# images:
+# - name: "app-image"
+#   newName: "nestjs-app"
+#   newTag: "initial"
+# namespace: "nestjs"
