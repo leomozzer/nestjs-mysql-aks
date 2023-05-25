@@ -49,7 +49,7 @@ jobs:
     - name: "Build and Push NestJS app"
       run: |
         cd app/
-        docker build -t ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
+        docker build -t ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest .
         docker push ${{ steps.myGetSecretAction.outputs.acrLoginServer}}/nestjs-app:latest
 
     - name: "Set AKS context"
