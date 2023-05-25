@@ -9,3 +9,8 @@ configMapGenerator:
   - name: nestjs-config-map
     envs:
       - .env
+
+images:
+- name: "app-image"
+  newName: "nestjs-app"
+  newTag: "initial"
