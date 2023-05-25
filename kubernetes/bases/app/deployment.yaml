@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nestjs
-  namespace: "nestjs"
 spec:
   replicas: 2
   selector:
@@ -15,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nestjs
-        image: "app-image" #nestjs.azurecr.io/nestjs-app:latest
+        image: nestjs.azurecr.io/nestjs-app:latest #nestjs.azurecr.io/nestjs-app:latest
         imagePullPolicy: IfNotPresent
         resources:
           limits:
