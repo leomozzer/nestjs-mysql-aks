@@ -1,12 +1,10 @@
 name: 'AKS Deployment'
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'terraform-live/**'
-  #     - 'terraform-modules/**'
-  #     - '.github/workflows/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/docker-build-push'
   workflow_dispatch:
   #pull_request:
 
@@ -65,7 +63,10 @@ jobs:
 
     - name: "Deploy NestJS to AKS"
       run: |
-        echo ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+        echo $IMAGE_NAME
         cd ./kubernetes/environments/${{ matrix.stage }}
-        ACR_NAME=${{ steps.myGetSecretAction.outputs.acrLoginServer }} IMAGE_NAME="nestjs-app:latest" kubectl kustomize .
+        kubectl kustomize .
         kubectl apply -k ../../bases/app/
+      env:
+        ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+        IMAGE_NAME: "nestjs-app:latest"
