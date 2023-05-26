@@ -40,12 +40,17 @@ docker push <ACR>.azurecr.io/nestjs-app
 az aks get-credentials --resource-group <RG> --name <AKS>
 az aks update -n <AKS> -g <RG> --attach-acr <ACR>
 kubectl get nodes
+#Run without the kustomization
+cd ./kubernetes/bases/
+kubectl apply -f ./app/
+kubectl set image deployment.apps/nestjs nestjs=<ACR>.azurecr.io/nestjs-app:latest
+#Run with the customization
+#no need if the apply -f was performed
 #Adding dynamic values
 #ubuntu ACR_NAME=nginx IMAGE_NAME="" kubectl kustomize .
 #windows
 #$Env:ACR_NAME= "nestjsmysqlaksdevacr.azurecr.io"
 #$Env:IMAGE_NAME="nestjs-app"
 #kubectl kustomize .
-kubectl apply -f .\app\ #Run without the kustomization -> kubectl set image deployment.apps/nestjs nestjs=<ACR>.azurecr.io/nestjs-app:latest
-kubectl apply -k .\app\ #Run with the customization -> no need if the apply -f was performed
+kubectl apply -k .\app\
 ```
