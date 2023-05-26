@@ -73,32 +73,30 @@ jobs:
     #     ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
     #     IMAGE_NAME: "nestjs-app:latest"
 
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-        envkey_IMAGE_NAME: "nestjs-app:latest"
-        directory: ./kubernetes/environments/${{ matrix.stage }}
-        file_name: .env
-        fail_on_empty: false
+    # - name: Make envfile
+    #   uses: SpicyPizza/create-envfile@v1.3
+    #   with:
+    #     envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+    #     envkey_IMAGE_NAME: "nestjs-app:latest"
+    #     directory: ./kubernetes/environments/${{ matrix.stage }}
+    #     file_name: .env
+    #     fail_on_empty: false
 
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-        envkey_IMAGE_NAME: "nestjs-app:latest"
-        directory: ./kubernetes/bases/app/
-        file_name: .env
-        fail_on_empty: false
+    # - name: Make envfile
+    #   uses: SpicyPizza/create-envfile@v1.3
+    #   with:
+    #     envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+    #     envkey_IMAGE_NAME: "nestjs-app:latest"
+    #     directory: ./kubernetes/bases/app/
+    #     file_name: .env
+    #     fail_on_empty: false
 
     - name: "Deploy NestJS to AKS"
       run: |
         echo ${{ env.IMAGE_NAME }}
         echo ${{ env.ACR_NAME }}
-        cd ./kubernetes/environments/${{ matrix.stage }}
-        kubectl kustomize .
-        kubectl apply -k ../../bases/app/
-        kubectl apply -f ../../bases/app/
+        cd ./kubernetes/bases/
+        kubectl apply -f ./app/
         kubectl set image deployment.apps/nestjs nestjs=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
         kubectl get services
       env:
