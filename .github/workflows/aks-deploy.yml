@@ -1,11 +1,11 @@
 name: 'AKS Deployment'
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/docker-build-push.yml'
-      - 'kubernetes/**'
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/workflows/aks-deploy.yml'
+  #     - 'kubernetes/**'
   workflow_dispatch:
   #pull_request:
 

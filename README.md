@@ -1,5 +1,29 @@
 # nestjs-mysql-aks
 
+## Repo Folder Structure
+
+```bash
+📂.github
+  └──📂workflows
+      ├──📜aks-deploy.yml
+      └──📜terraform-deploy.yml
+📂app
+📂kubernetes
+  └──📂bases
+      └──📂app
+          ├──📜deployment.yaml
+          └──📜service.yaml
+📂terraform-main
+  ├──📜main.tf
+  ├──📜outputs.tf
+  └──📜variables.tf
+📂terraform-modules
+  └──📂azure-container-registry
+      ├──📜main.tf
+      ├──📜outputs.tf
+      └──📜variables.tf
+```
+
 ## Configuration
 
 - kind create cluster --name "kluster"
