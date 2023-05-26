@@ -73,12 +73,21 @@ jobs:
     #     ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
     #     IMAGE_NAME: "nestjs-app:latest"
 
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
+        envkey_IMAGE_NAME: "nestjs-app:latest"
+        directory: ./kubernetes/environments/${{ matrix.stage }}
+        file_name: .env
+        fail_on_empty: false
+
     - name: "Deploy NestJS to AKS"
       run: |
         echo ${{ env.IMAGE_NAME }}
         echo ${{ env.ACR_NAME }}
         cd ./kubernetes/environments/${{ matrix.stage }}
-        ACR_NAME=${{ env.ACR_NAME }} IMAGE_NAME=${{ env.IMAGE_NAME }} kubectl kustomize .
+        kubectl kustomize .
         kubectl apply -k ../../bases/app/
       env:
         ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
