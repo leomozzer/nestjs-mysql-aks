@@ -98,8 +98,9 @@ jobs:
         cd ./kubernetes/environments/${{ matrix.stage }}
         kubectl kustomize .
         kubectl apply -k ../../bases/app/
-        kubectl get services
+        kubectl apply -f ../../bases/app/
         kubectl set image deployment.apps/nestjs nestjs=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
+        kubectl get services
       env:
         ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
         IMAGE_NAME: "nestjs-app:latest"
