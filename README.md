@@ -46,6 +46,6 @@ kubectl get nodes
 #$Env:ACR_NAME= "nestjsmysqlaksdevacr.azurecr.io"
 #$Env:IMAGE_NAME="nestjs-app"
 #kubectl kustomize .
-kubectl apply -f .\app\ #Run without the kustomization
-kubectl apply -k .\app\ #Run with the customization
+kubectl apply -f .\app\ #Run without the kustomization -> kubectl set image deployment.apps/nestjs nestjs=<ACR>.azurecr.io/nestjs-app:latest
+kubectl apply -k .\app\ #Run with the customization -> no need if the apply -f was performed
 ```
