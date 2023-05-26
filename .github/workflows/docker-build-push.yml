@@ -87,7 +87,7 @@ jobs:
       with:
         envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
         envkey_IMAGE_NAME: "nestjs-app:latest"
-        directory: ./kubernetes/bases/app/${{ matrix.stage }}
+        directory: ./kubernetes/bases/app/
         file_name: .env
         fail_on_empty: false
 
