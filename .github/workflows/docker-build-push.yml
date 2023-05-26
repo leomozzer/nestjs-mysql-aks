@@ -9,13 +9,13 @@ on:
   workflow_dispatch:
   #pull_request:
 
-# env:
+env:
 #   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
 #   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 #   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 #   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 #   GIT_REPOSITORY: https://github.com/leomozzer/nestjs-mysql-aks
-#   PROJECT_NAME: nestjs-mysql-aks
+  PROJECT_NAME: nestjs-mysql-aks
 #   TERRAFORM_WORKING_DIR: "terraform-live"
 #   TERRAFORM_MODULES_DIR: "terraform-modules"
 
@@ -36,7 +36,7 @@ jobs:
     - uses: Azure/get-keyvault-secrets@v1
       id: myGetSecretAction
       with: 
-        keyvault: nestjs-mysql-aks-${{ matrix.stage }}-kv
+        keyvault: ${{ env.PROJECT_NAME }}-${{ matrix.stage }}-kv
         secrets: 'acrLoginServer, acrUsername, acrPassword'
 
     - uses: azure/docker-login@v1
@@ -55,46 +55,15 @@ jobs:
       id: set-context
       uses: azure/aks-set-context@v3
       with:
-        resource-group: 'nestjs-mysql-aks-${{ matrix.stage }}-rg'
-        cluster-name: 'nestjs-mysql-aks-${{ matrix.stage }}-aks'
+        resource-group: '${{ env.PROJECT_NAME }}-${{ matrix.stage }}-rg'
+        cluster-name: '${{ env.PROJECT_NAME }}-${{ matrix.stage }}-aks'
 
     - name: "Setup kubectl"
       id: install-kubectl
       uses: azure/setup-kubectl@v3
 
-    # - name: "Deploy NestJS to AKS"
-    #   run: |
-    #     cd ./kubernetes/bases/app
-    #     kustomize edit set image app-imag=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
-    #     cd ..
-    #     kubectl apply -f ./app/
-    #     kubectl get nodes
-    #   env:
-    #     ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-    #     IMAGE_NAME: "nestjs-app:latest"
-
-    # - name: Make envfile
-    #   uses: SpicyPizza/create-envfile@v1.3
-    #   with:
-    #     envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-    #     envkey_IMAGE_NAME: "nestjs-app:latest"
-    #     directory: ./kubernetes/environments/${{ matrix.stage }}
-    #     file_name: .env
-    #     fail_on_empty: false
-
-    # - name: Make envfile
-    #   uses: SpicyPizza/create-envfile@v1.3
-    #   with:
-    #     envkey_ACR_NAME: ${{ steps.myGetSecretAction.outputs.acrLoginServer }}
-    #     envkey_IMAGE_NAME: "nestjs-app:latest"
-    #     directory: ./kubernetes/bases/app/
-    #     file_name: .env
-    #     fail_on_empty: false
-
     - name: "Deploy NestJS to AKS"
       run: |
-        echo ${{ env.IMAGE_NAME }}
-        echo ${{ env.ACR_NAME }}
         cd ./kubernetes/bases/
         kubectl apply -f ./app/
         kubectl set image deployment.apps/nestjs nestjs=${{ env.ACR_NAME }}/${{ env.IMAGE_NAME }}
